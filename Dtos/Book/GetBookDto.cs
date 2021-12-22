@@ -1,8 +1,9 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using Book_API.Models;
+using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Book_API.Models
+namespace Book_API.Dtos.Book
 {
-    public class Book
+    public class GetBookDto
     {
         public int Id { get; set; }
 

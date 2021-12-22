@@ -1,37 +1,103 @@
-﻿using Book_API.Models;
+﻿using AutoMapper;
+using Book_API.Data;
+using Book_API.Dtos.Book;
+using Book_API.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Book_API.Services.BookService
 {
     public class BookService : IBookService
     {
 
-        private static List<Book> books = new List<Book> {
-            new Book(),
-            new Book{Id=1,Title="World Wars" },
+        private readonly IMapper _mapper;
 
+        private readonly DataContext _context;
 
-        };
-        async Task<ServiceResponse<List<Book>>> IBookService.AddNewBook(Book newBook)
+        public BookService(IMapper mapper, DataContext context)
         {
-            var serviceResponse=new ServiceResponse<List<Book>>();  
-            books.Add(newBook);
-            serviceResponse.Data = books;
+            _context = context;
+            _mapper = mapper;   
+        }
+       public async Task<ServiceResponse<List<GetBookDto>>> AddNewBook(AddBookDto newBook)
+        {
+            
+            var serviceResponse=new ServiceResponse<List<GetBookDto>>();  
+            Book book=_mapper.Map<Book>(newBook);
+           _context.Books.Add(book);
+            await _context.SaveChangesAsync();
+            serviceResponse.Data = await _context.Books.Select(c=>_mapper.Map<GetBookDto>(c)).ToListAsync();
             return serviceResponse;
         }
 
-        async Task<ServiceResponse<List<Book>>> IBookService.GetAllBooks()
+        public async Task<ServiceResponse<List<GetBookDto>>> DeleteBook(int id)
         {
+            var serviceResponse = new ServiceResponse<List<GetBookDto>>();
+            try
+            {
+                Book book = await _context.Books.FirstAsync(c => c.Id == id);
 
-            var serviceResponse = new ServiceResponse<List<Book>>();
-            serviceResponse.Data = books;
+                _context.Books.Remove(book);
+
+                await _context.SaveChangesAsync();
+
+                serviceResponse.Data =  _context.Books.Select(c=>_mapper.Map<GetBookDto>(c)).ToList();
+            }
+            catch (Exception ex)
+            {
+                serviceResponse.sucesss = false;
+                serviceResponse.message = ex.Message;
+            }
+
+
             return serviceResponse;
         }
 
-        async Task<ServiceResponse<Book>> IBookService.GetBookById(int id)
+        public async Task<ServiceResponse<List<GetBookDto>>> GetAllBooks()
         {
-            var serviceResponse = new ServiceResponse<Book>();
-            serviceResponse.Data= books.FirstOrDefault(c => c.Id == id);
+
+            var serviceResponse = new ServiceResponse<List<GetBookDto>>();
+            var dbBooks = await _context.Books.ToListAsync();
+            serviceResponse.Data = dbBooks.Select(c => _mapper.Map<GetBookDto>(c)).ToList();
             return serviceResponse;
+        }
+
+        public async Task<ServiceResponse<GetBookDto>> GetBookById(int id)
+        {
+            var serviceResponse = new ServiceResponse<GetBookDto>();
+            var dbBook = await _context.Books.FirstOrDefaultAsync(c => c.Id == id);
+            serviceResponse.Data= _mapper.Map<GetBookDto>(dbBook);
+            return serviceResponse;
+        }
+
+        public async Task<ServiceResponse<GetBookDto>> UpdateBook(UpdatedBookDto updatedBook)
+        {
+            var serviceResponse= new ServiceResponse<GetBookDto>();
+            try
+            {
+                Book book = await _context.Books.FirstOrDefaultAsync(c => c.Id == updatedBook.Id);
+
+                book.Author = updatedBook.Author;
+                book.Title = updatedBook.Title;
+                book.Description = updatedBook.Description;
+                book.Brand = updatedBook.Brand;
+                book.year = updatedBook.year;
+                book.Class = updatedBook.Genre;
+                book.price = updatedBook.price;
+
+                await _context.SaveChangesAsync();
+
+                serviceResponse.Data = _mapper.Map<GetBookDto>(book);
+            }
+            catch (Exception ex)
+            {
+                serviceResponse.sucesss = false;
+                serviceResponse.message = ex.Message;
+            }
+            
+
+            return serviceResponse;
+
+
         }
     }
 }
