@@ -1,11 +1,11 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using Book_API.Models;
+using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Book_API.Models
+namespace Book_API.Dtos.Book
 {
-    public class Book
+    public class UpdatedBookDto
     {
         public int Id { get; set; }
-
         public string Title { get; set; } = "Bible of the Fallen";
 
         public string Description { get; set; } = "Fiction";
@@ -15,8 +15,8 @@ namespace Book_API.Models
 
         public int year { get; set; }
 
-        public GenreBookClass Class { get; set; } = GenreBookClass.SciFi;
-
+        public GenreBookClass Genre { get; set; } = GenreBookClass.SciFi;
+       
         [Column(TypeName = "decimal(5,2)")]
         public decimal price { get; set; }
     }

@@ -1,10 +1,10 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using Book_API.Models;
+using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Book_API.Models
+namespace Book_API.Dtos.Book
 {
-    public class Book
+    public class AddBookDto
     {
-        public int Id { get; set; }
 
         public string Title { get; set; } = "Bible of the Fallen";
 
