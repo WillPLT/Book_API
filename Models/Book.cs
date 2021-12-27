@@ -6,6 +6,10 @@ namespace Book_API.Models
     {
         public int Id { get; set; }
 
+        //Add book code to avoid show id
+        public string Book_code {get; set;}= Guid.NewGuid().ToString("n").Substring(0, 5);
+
+       
         public string Title { get; set; } = "Bible of the Fallen";
 
         public string Description { get; set; } = "Fiction";
