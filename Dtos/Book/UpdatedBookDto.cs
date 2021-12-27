@@ -5,7 +5,7 @@ namespace Book_API.Dtos.Book
 {
     public class UpdatedBookDto
     {
-        public int Id { get; set; }
+        public string Book_code { get; set; }
         public string Title { get; set; } = "Bible of the Fallen";
 
         public string Description { get; set; } = "Fiction";

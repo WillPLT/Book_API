@@ -29,12 +29,12 @@ namespace Book_API.Services.BookService
             return serviceResponse;
         }
 
-        public async Task<ServiceResponse<List<GetBookDto>>> DeleteBook(int id)
+        public async Task<ServiceResponse<List<GetBookDto>>> DeleteBook(string bookCode)
         {
             var serviceResponse = new ServiceResponse<List<GetBookDto>>();
             try
             {
-                Book book = await _context.Books.FirstAsync(c => c.Id == id);
+                Book book = await _context.Books.FirstAsync(c => c.Book_code == bookCode);
 
                 _context.Books.Remove(book);
 
@@ -52,6 +52,22 @@ namespace Book_API.Services.BookService
             return serviceResponse;
         }
 
+        public async Task<ServiceResponse<List<GetBookDto>>> DeleteBookCollection()
+        {
+            var serviceResponse = new ServiceResponse<List<GetBookDto>>();
+            
+           
+            
+                serviceResponse.sucesss = false;
+                serviceResponse.message = "405 Method not allowed!";
+            
+
+
+            return serviceResponse;
+        }
+
+
+
         public async Task<ServiceResponse<List<GetBookDto>>> GetAllBooks()
         {
 
@@ -61,10 +77,10 @@ namespace Book_API.Services.BookService
             return serviceResponse;
         }
 
-        public async Task<ServiceResponse<GetBookDto>> GetBookById(int id)
+        public async Task<ServiceResponse<GetBookDto>> GetBookById(string bookCode)
         {
             var serviceResponse = new ServiceResponse<GetBookDto>();
-            var dbBook = await _context.Books.FirstOrDefaultAsync(c => c.Id == id);
+            var dbBook = await _context.Books.FirstOrDefaultAsync(c => c.Book_code == bookCode);
             serviceResponse.Data= _mapper.Map<GetBookDto>(dbBook);
             return serviceResponse;
         }
@@ -74,7 +90,7 @@ namespace Book_API.Services.BookService
             var serviceResponse= new ServiceResponse<GetBookDto>();
             try
             {
-                Book book = await _context.Books.FirstOrDefaultAsync(c => c.Id == updatedBook.Id);
+                Book book = await _context.Books.FirstOrDefaultAsync(c => c.Book_code == updatedBook.Book_code);
 
                 book.Author = updatedBook.Author;
                 book.Title = updatedBook.Title;
@@ -83,6 +99,7 @@ namespace Book_API.Services.BookService
                 book.year = updatedBook.year;
                 book.Class = updatedBook.Genre;
                 book.price = updatedBook.price;
+                book.Book_code = updatedBook.Book_code;
 
                 await _context.SaveChangesAsync();
 

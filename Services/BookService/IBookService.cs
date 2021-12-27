@@ -6,12 +6,14 @@ namespace Book_API.Services.BookService
     public interface IBookService
     {
         Task<ServiceResponse<List<GetBookDto>>> GetAllBooks();
-        Task<ServiceResponse<GetBookDto>> GetBookById(int id);
+        Task<ServiceResponse<GetBookDto>> GetBookById(string bookCode);
 
         Task<ServiceResponse<List<GetBookDto>>> AddNewBook(AddBookDto NewBook);
 
         Task<ServiceResponse<GetBookDto>> UpdateBook(UpdatedBookDto updatedBook);
 
-        Task<ServiceResponse<List<GetBookDto>>> DeleteBook(int id);
+        Task<ServiceResponse<List<GetBookDto>>> DeleteBook(string bookCode);
+
+        Task<ServiceResponse<List<GetBookDto>>> DeleteBookCollection();
     }
 }

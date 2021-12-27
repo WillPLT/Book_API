@@ -3,7 +3,12 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.1.31903.286
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Book_API", "Book_API.csproj", "{1547CEA5-4A41-4D53-B6DE-3CD4EF22BD45}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Book_API", "Book_API.csproj", "{1547CEA5-4A41-4D53-B6DE-3CD4EF22BD45}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{30E518A5-C3DD-45C3-BFC0-F21174A601A3}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -5,7 +5,7 @@ namespace Book_API.Dtos.Book
 {
     public class GetBookDto
     {
-        public int Id { get; set; }
+        public string Book_code { get; set; }
 
         public string Title { get; set; } = "Bible of the Fallen";
 
