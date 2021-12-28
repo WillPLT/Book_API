@@ -85,12 +85,12 @@ namespace Book_API.Services.BookService
             return serviceResponse;
         }
 
-        public async Task<ServiceResponse<GetBookDto>> UpdateBook(UpdatedBookDto updatedBook)
+        public async Task<ServiceResponse<GetBookDto>> UpdateBook( string bookcode, UpdatedBookDto updatedBook)
         {
             var serviceResponse= new ServiceResponse<GetBookDto>();
             try
             {
-                Book book = await _context.Books.FirstOrDefaultAsync(c => c.Book_code == updatedBook.Book_code);
+                Book book = await _context.Books.FirstOrDefaultAsync(c => c.Book_code == bookcode);
 
                 book.Author = updatedBook.Author;
                 book.Title = updatedBook.Title;
@@ -99,7 +99,6 @@ namespace Book_API.Services.BookService
                 book.year = updatedBook.year;
                 book.Class = updatedBook.Genre;
                 book.price = updatedBook.price;
-                book.Book_code = updatedBook.Book_code;
 
                 await _context.SaveChangesAsync();
 
@@ -108,7 +107,7 @@ namespace Book_API.Services.BookService
             catch (Exception ex)
             {
                 serviceResponse.sucesss = false;
-                serviceResponse.message = ex.Message;
+                serviceResponse.message = "Data not found!!";
             }
             
 
