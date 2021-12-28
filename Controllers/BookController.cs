@@ -20,17 +20,27 @@ namespace Book_API.Controllers
             _bookService = bookService;
         }
 
-        [HttpGet("GetAll")]
+        [HttpGet]
         public async Task<ActionResult<ServiceResponse<List<GetBookDto>>>> GetCollection()
         {
             return Ok(await _bookService.GetAllBooks());
-
         }
 
         [HttpGet("{bookCode}")]
         public async Task<ActionResult<ServiceResponse<GetBookDto>>> GetBook(string bookCode)
         {
-            return Ok(await _bookService.GetBookById(bookCode));
+
+            var response =  await _bookService.GetBookById(bookCode);
+            if (response.Data!=null)
+           
+            {
+                return Ok(response);
+            }
+            else
+            {
+                 return NotFound("Book code not found!!");
+            }
+            
         }
 
         [HttpPost]
@@ -55,13 +65,13 @@ namespace Book_API.Controllers
 
         }
 
-        [HttpPut]
-        public async Task<ActionResult<ServiceResponse<GetBookDto>>> UpdateBook(UpdatedBookDto updateBook)
+        [HttpPut("{bookcode}")]
+        public async Task<ActionResult<ServiceResponse<GetBookDto>>> UpdateBook(string bookcode, UpdatedBookDto updateBook)
         {
-            var response = await _bookService.UpdateBook(updateBook);
+            var response = await _bookService.UpdateBook(bookcode, updateBook);
             if (response.Data == null)
             {
-                return NotFound(response);
+                return NotFound("Book code not found!!");
             }
 
             return Ok("Data was updated sucessfully!");
@@ -73,17 +83,16 @@ namespace Book_API.Controllers
             var response = await _bookService.DeleteBook(bookCode);
             if (response.Data == null)
             {
-                return NotFound(response);
+                return NotFound("Book code not found!!");
             }
 
             return Ok("Data was deleted sucessfully!");
         }
 
-        [HttpDelete("RemoveAll")]
+        [HttpDelete]
         public async Task<ActionResult<ServiceResponse<List<GetBookDto>>>> DeleteBookCollection()
         {
-            var response = await _bookService.DeleteBookCollection();
-
+            
             return StatusCode(StatusCodes.Status405MethodNotAllowed);
         }
 

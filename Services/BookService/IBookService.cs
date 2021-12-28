@@ -10,7 +10,7 @@ namespace Book_API.Services.BookService
 
         Task<ServiceResponse<List<GetBookDto>>> AddNewBook(AddBookDto NewBook);
 
-        Task<ServiceResponse<GetBookDto>> UpdateBook(UpdatedBookDto updatedBook);
+        Task<ServiceResponse<GetBookDto>> UpdateBook(string bookcode, UpdatedBookDto updatedBook);
 
         Task<ServiceResponse<List<GetBookDto>>> DeleteBook(string bookCode);
 
